@@ -84,7 +84,16 @@ function drawStartHint() {
         ctx.fillStyle = "#fff";
         ctx.font = "20px Arial";
         ctx.textAlign = "center";
-        ctx.fillText("按方向键开始游戏", canvas.width / 2, canvas.height / 2);
+        ctx.fillText("按方向键或点击按钮开始", canvas.width / 2, canvas.height / 2);
+    }
+}
+
+function setDir(newDir) {
+    if ((newDir === "up" && dir !== "down") ||
+        (newDir === "down" && dir !== "up") ||
+        (newDir === "left" && dir !== "right") ||
+        (newDir === "right" && dir !== "left")) {
+        dir = newDir;
     }
 }
 
@@ -97,15 +106,16 @@ document.addEventListener("keydown", e => {
     if ((key === "ArrowRight" || key === "d") && dir !== "left") dir = "right";
 });
 
-function gameLoop() {
+function update() {
     moveSnake();
     drawMap();
     drawSnake();
     drawFood();
     drawScore();
     drawStartHint();
-    requestAnimationFrame(gameLoop);
 }
 
+// 改为每 200ms 一次（更慢更适中）
+setInterval(update, 200);
+
 placeFood();
-gameLoop();
